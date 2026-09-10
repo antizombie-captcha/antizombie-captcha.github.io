@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>antizombie captcha - generate free image captcha</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+        
+        .subtitle {
+            font-size: 12px;
+            color: #ccc;
+            margin-bottom: 30px;
+        }
+        
+        .features {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 20px;
+            margin-bottom: 30px;
+            font-size: 12px;
+            line-height: 1.6;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .feature-item {
+            margin-bottom: 8px;
+        }
+        
+        .preview-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .preview-label {
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        #captchaImage {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto 20px;
+            background-color: #000;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 10px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .usage-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .usage-label {
+            font-size: 11px;
+            color: #aaa;
+            margin-bottom: 10px;
+        }
+        
+        .usage-url {
+            font-size: 11px;
+            color: #ddd;
+            word-break: break-all;
+        }
+        
+        .captcha-text {
+            display: none;
+            font-size: 12px;
+            color: #000;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .captcha-text.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h1>antizombie <strong>captcha</strong> <span class="subtitle">generate free image captcha</span></h1>
+        </div>
+        
+        <div class="features">
+            <div class="feature-title">Features</div>
+            <div class="feature-item">• Difference-blend color inversion (no plain text-on-background)</div>
+            <div class="feature-item">• Randomized acidneon color palette per request</div>
+            <div class="feature-item">• Dense Base64-noise background clutter</div>
+            <div class="feature-item">• Geometric distortions &amp; polygraphic wrapping</div>
+            <div class="feature-item">• Ambiguous characters excluded (l, I., Q) and "0" rendered narrower to avoid confusion</div>
+            <div class="feature-item">• HTML endpoint with configurable resolution (capped at 500x500)</div>
+            <div class="feature-item">• Per-IP rate limiting (5 captchas/sec)</div>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-label">live preview</div>
+            <img id="captchaImage" src="" alt="CAPTCHA" style="border: 1px solid #444; background-color: #000; display: block; max-width: 100%; height: auto; margin: 0 auto 20px;">
+            
+            <div class="button-group">
+                <button onclick="generateCaptcha()">Generate New</button>
+                <button onclick="toggleAnswer()">Show Answer</button>
+            </div>
+            
+            <div class="captcha-text" id="answerDisplay"></div>
+            
+            <div class="usage-section">
+                <div class="usage-label">usage:</div>
+                <div class="usage-url">https://antizombie.onrender.com/captcha_gen?res=320x120</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'https://antizombie.onrender.com/captcha_gen';
+        const DEFAULT_RES = '320x120';
+        let currentImageUrl = '';
+        let loadingTimeout;
+        
+        async function generateCaptcha() {
+            const img = document.getElementById('captchaImage');
+            const answerDiv = document.getElementById('answerDisplay');
+            
+            // Show loading state
+            img.style.opacity = '0.5';
+            
+            try {
+                // Add timestamp to prevent caching
+                const timestamp = Date.now();
+                const url = `${API_URL}?res=${DEFAULT_RES}&t=${timestamp}`;
+                
+                img.src = url;
+                currentImageUrl = url;
+                answerDiv.classList.remove('show');
+                
+                img.onload = function() {
+                    img.style.opacity = '1';
+                };
+                
+                img.onerror = function() {
+                    img.style.opacity = '1';
+                    console.error('Failed to load CAPTCHA');
+                };
+                
+            } catch (error) {
+                console.error('Error generating CAPTCHA:', error);
+                img.style.opacity = '1';
+            }
+        }
+        
+        function toggleAnswer() {
+            const answerDiv = document.getElementById('answerDisplay');
+            
+            if (answerDiv.classList.contains('show')) {
+                answerDiv.classList.remove('show');
+            } else {
+                answerDiv.textContent = 'CAPTCHA answer provided by server (cannot be extracted from image)';
+                answerDiv.classList.add('show');
+            }
+        }
+        
+        // Generate initial captcha
+        generateCaptcha();
+    </script>
+</body>
+</html>
